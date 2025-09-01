@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,6 +17,7 @@ export function AuthForm() {
   const [loading, setLoading] = useState(false)
   const { signIn, signUp } = useAuth()
   const { toast } = useToast()
+  const router = useRouter()
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,6 +28,7 @@ export function AuthForm() {
         title: "Welcome back!",
         description: "You've successfully signed in to TaskMaster Pro.",
       })
+      router.push("/dashboard")
     } catch (error: any) {
       toast({
         title: "Sign in failed",
@@ -47,6 +49,7 @@ export function AuthForm() {
         title: "Account created!",
         description: "Welcome to TaskMaster Pro. Let's get organized!",
       })
+      router.push("/dashboard")
     } catch (error: any) {
       toast({
         title: "Sign up failed",

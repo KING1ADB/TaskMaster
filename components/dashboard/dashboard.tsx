@@ -11,7 +11,6 @@ import { PomodoroTimer } from "@/components/pomodoro/pomodoro-timer"
 import { GamificationPanel } from "@/components/gamification/gamification-panel"
 import { AISuggestions } from "@/components/ai/ai-suggestions"
 import { CalendarView } from "@/components/calendar/calendar-view"
-import { TimelineView } from "@/components/timeline/timeline-view"
 import { WeeklyView } from "@/components/calendar/weekly-view"
 import { useTasks } from "@/hooks/use-tasks"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -27,10 +26,17 @@ import {
   CalendarDays,
   Baseline as Timeline,
 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export function Dashboard() {
   const { user, logout } = useAuth()
   const { todayTasks, overdueTasks, completedTasks } = useTasks()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    await logout()
+    router.push("/")
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -48,7 +54,7 @@ export function Dashboard() {
             <Button variant="outline" size="sm" className="sm:hidden bg-transparent">
               <Settings className="h-4 w-4" />
             </Button>
-            <Button onClick={logout} variant="outline" size="sm">
+            <Button onClick={handleLogout} variant="outline" size="sm">
               Sign Out
             </Button>
           </div>
@@ -192,10 +198,6 @@ export function Dashboard() {
             </TabsContent>
 
             <TabsContent value="timeline" className="animate-in slide-in-from-top-5 duration-300">
-              <TimelineView />
-            </TabsContent>
-
-            <TabsContent value="pomodoro" className="space-y-4 sm:space-y-6 animate-in zoom-in-95 duration-300">
               <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
                 <div className="lg:col-span-2">
                   <PomodoroTimer />

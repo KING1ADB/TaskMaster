@@ -1,17 +1,18 @@
 "use client"
 
-import { LandingPage } from "@/components/landing/landing-page"
-import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/use-auth"
+import { Dashboard } from "@/components/dashboard/dashboard"
+import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { Toaster } from "@/components/ui/toaster"
 
-export default function Home() {
-  const router = useRouter()
+export default function DashboardPage() {
   const { user, loading } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
-    if (!loading && user) {
-      router.push("/dashboard")
+    if (!loading && !user) {
+      router.push("/auth")
     }
   }, [user, loading, router])
 
@@ -27,8 +28,13 @@ export default function Home() {
   }
 
   if (!user) {
-    return <LandingPage onGetStarted={() => router.push("/auth")} onSignIn={() => router.push("/auth")} />
+    return null // Will redirect to auth
   }
 
-  return null
+  return (
+    <>
+      <Dashboard />
+      <Toaster />
+    </>
+  )
 }
